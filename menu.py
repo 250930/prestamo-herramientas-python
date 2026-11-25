@@ -61,7 +61,7 @@ def menu_admin():
         """)
         op = str(input("Ingrese una opcion: "))
         from herramientas import ver_herramientas_disponibles,agregar_herramienta,  eliminar_herramienta, modificar_herramienta
-        from usurios import agregar_usuario, eliminar_usuario, actualizar_usuario
+        from usuarios import agregar_usuario, eliminar_usuario, actualizar_usuario
         from datos import prestamos_pendientes, consultas_reportes, registro_eventos, mostrar_logs
         if op == "1":
             ver_herramientas_disponibles(herramientas)

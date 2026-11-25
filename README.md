@@ -1,80 +1,75 @@
-SISTEMA DE GESTIÓN DE USUARIOS Y HERRAMIENTAS
+# 🔧 Sistema de Préstamo de Herramientas Comunitario
 
-DESCRIPCIÓN GENERAL
+Aplicación de consola en **Python** para que la junta comunal de un barrio controle las herramientas que los vecinos se prestan entre sí: qué herramientas hay, quién las tiene, cuándo deben devolverse y cuáles se piden más.
 
-Este proyecto es un sistema desarrollado en Python que permite
-administrar usuarios y herramientas mediante una interfaz en consola. El
-sistema implementa operaciones CRUD (Crear, Leer, Actualizar y Eliminar)
-y utiliza archivos en formato JSON para almacenar la información de
-manera persistente.
+La información se guarda en archivos **JSON**, y cada evento importante (préstamos, errores, cambios) queda registrado en un archivo de logs.
 
-El objetivo principal del proyecto es aplicar los fundamentos de
-programación, el uso de estructuras de datos dinámicas como listas y
-diccionarios, la modularización del código y la separación de
-responsabilidades.
+---
 
-ARQUITECTURA DEL SISTEMA
+## ✨ Funcionalidades
 
-El sistema está organizado en módulos para mantener una estructura clara
-y ordenada:
+**Roles con permisos distintos**
 
-1.  MÓDULO MENÚ Controla el flujo del programa.
-    -   Muestra las opciones disponibles.
-    -   Captura la opción seleccionada por el usuario.
-    -   Redirige la ejecución hacia el módulo correspondiente.
-    -   Utiliza un ciclo while True para mantener el sistema activo.
-    -   Finaliza con break cuando el usuario decide salir.
-2.  MÓDULO DATOS Gestiona la persistencia de la información.
-    -   Usa json.load() para deserializar datos del archivo JSON a
-        estructuras Python.
-    -   Usa json.dump() para serializar estructuras Python nuevamente a
-        formato JSON.
-    -   Se encarga únicamente de leer y guardar información.
-3.  MÓDULO USUARIOS Implementa la gestión completa de usuarios.
-    -   Agregar usuario: crea un diccionario con los datos ingresados y
-        lo añade a la lista.
-    -   Listar usuarios: recorre la lista y muestra la información
-        almacenada.
-    -   Actualizar usuario: busca por ID y modifica directamente los
-        valores del diccionario.
-    -   Eliminar usuario: busca por ID y elimina el registro usando
-        remove().
-4.  MÓDULO HERRAMIENTAS Funciona con la misma lógica estructural que
-    usuarios, pero aplicado a la entidad herramienta.
-    -   Agregar herramienta.
-    -   Listar herramientas.
-    -   Actualizar herramienta.
-    -   Eliminar herramienta.
-5.  MÓDULO REPORTES Genera información estadística básica.
-    -   Conteo total de registros.
-    -   Clasificación por tipo o estado.
-    -   Uso de contadores y recorridos sobre listas en memoria.
+| Rol | Qué puede hacer |
+|---|---|
+| **Residente** | Ver herramientas disponibles, solicitar una herramienta y devolverla |
+| **Administrador** | Gestionar usuarios y herramientas (CRUD), aprobar préstamos pendientes, ver reportes y logs |
 
-PERSISTENCIA DE DATOS
+**Gestión de préstamos**
+- Verifica la disponibilidad antes de prestar y descuenta del stock.
+- Al devolver la herramienta, actualiza el estado del préstamo y restaura la cantidad.
+- Las solicitudes quedan en espera hasta que el administrador las aprueba.
 
-El sistema utiliza archivos JSON como mecanismo de almacenamiento. Esto
-permite que la información permanezca guardada incluso después de cerrar
-el programa.
+**Reportes**
+- Herramientas con stock bajo
+- Préstamos activos y vencidos
+- Historial de préstamos de un usuario
+- Herramientas más solicitadas
+- Usuarios más activos
 
-Proceso técnico: - JSON -> json.load() -> Lista en memoria - Lista en
-memoria -> json.dump() -> JSON
+**Registro de eventos**: cada acción y cada error (por ejemplo, pedir más unidades de las disponibles) se guarda con fecha y hora en `eventos.txt`.
 
-COMPLEJIDAD
+---
 
-Las operaciones de búsqueda (actualizar y eliminar) tienen una
-complejidad O(n), ya que recorren la lista hasta encontrar coincidencia.
+## 🧱 Estructura
 
-CONCEPTOS APLICADOS
+```
+├── menu.py            Punto de entrada: inicio de sesión y menús por rol
+├── usuarios.py        CRUD de usuarios
+├── herramientas.py    CRUD de herramientas, solicitud y devolución
+├── datos.py           Préstamos pendientes, reportes y logs
+├── reportes.py        Consultas estadísticas
+├── gestion.py         Carga y guardado de archivos JSON
+├── usuarios.json      ┐
+├── herramientas.json  ├ Persistencia
+├── prestamos.json     ┘
+├── eventos.txt        Log de eventos
+└── proyecto.txt       Enunciado original del proyecto
+```
 
--   Modularización del código
--   Separación de responsabilidades
--   Manipulación de listas y diccionarios
--   Estructuras de datos mutables
--   Serialización y deserialización JSON
--   Control de flujo con ciclos y condicionales
--   Implementación completa de un sistema CRUD
+---
 
-AUTOR
+## 🚀 Cómo ejecutarlo
 
-Proyecto académico desarrollado para aplicar fundamentos de programación
-en Python y gestión básica de datos.
+Requiere **Python 3.10 o superior** y no necesita librerías externas.
+
+```bash
+git clone https://github.com/250930/prestamo-herramientas-python.git
+cd prestamo-herramientas-python
+python menu.py
+```
+
+Para entrar, usa el nombre y el ID de un usuario registrado en `usuarios.json`. Según su `tipo_usuario`, verás el menú de **residente** o el de **administrador**.
+
+---
+
+## 🧠 Conceptos aplicados
+
+Modularización · Listas y diccionarios · Serialización JSON (`json.load` / `json.dump`) · Manejo de fechas con `datetime` · Control de flujo · Manejo de errores · Registro de logs
+
+---
+
+## 👤 Autor
+
+**Jaime Naranjo**, desarrollador en formación en Campuslands.
+GitHub: [@250930](https://github.com/250930)
